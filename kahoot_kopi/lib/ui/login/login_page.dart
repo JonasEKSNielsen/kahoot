@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
+import 'package:kahoot_kopi/classes/helpers/api.dart';
+import 'package:kahoot_kopi/classes/helpers/general_helper.dart';
+import 'package:kahoot_kopi/classes/objects/join_session_dto.dart';
+import 'package:kahoot_kopi/classes/objects/path.dart';
+import 'package:kahoot_kopi/ui/login/login_bloc.dart';
+import 'package:kahoot_kopi/widgets/default_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,37 +16,71 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  TextEditingController pinController = TextEditingController();
+  TextEditingController nicknameController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Login"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+    return DefaultScaffold(
+      child: BlocProvider(
+          create: (_) => LoginBloc(buildContext: context),
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image(image: AssetImage('assets/logo.png')),
+            
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                    child: TextField(
+                      controller: pinController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Game Pin',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                    child: TextField(
+                      controller: nicknameController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Nickname',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        Response res = await API.postRequest(
+                          ApiPath.quizSession, 
+                          API.createJoinEnvelope(
+                            JoinSessionDto(
+                              pin: pinController.text, 
+                              nickname: nicknameController.text,
+                            ),
+                          ),
+                        );
+
+                        if (res.statusCode == 200) {
+                          context.read<LoginBloc>().add(JoinGameEvent(response: res));
+                        } else {
+                          GeneralHelper.makeSnackBar('Error: ${res.body}');
+                        }
+                      } catch (e) {
+                        print('Error: $e');
+                      }
+                    },
+                    child: const Text('Join Game'),
+                  ),
+                ],
+              ),
             ),
-          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
