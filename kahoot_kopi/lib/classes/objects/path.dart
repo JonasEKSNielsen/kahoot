@@ -3,8 +3,12 @@
 enum ApiPath {
   auth,
   participant,
+  participantSubmitAnswer,
+  participantLeaderboard,
   quiz,
   quizSession,
+  quizSessionJoin,
+  quizSessionPin,
 }
 
 extension PathExtension on ApiPath {
@@ -15,10 +19,18 @@ extension PathExtension on ApiPath {
         name = 'auth';
       case ApiPath.participant:
         name = 'Participant';
+      case ApiPath.participantSubmitAnswer:
+        name = 'Participant/submit-answer';
+      case ApiPath.participantLeaderboard:
+        name = 'Participant/leaderboard';
       case ApiPath.quiz:
         name = 'Quiz';
       case ApiPath.quizSession:
         name = 'QuizSession';
+      case ApiPath.quizSessionJoin:
+        name = 'QuizSession/join';
+      case ApiPath.quizSessionPin:
+        name = 'QuizSession/pin';
     }
     return name;
   }

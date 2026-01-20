@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
 class DefaultAppbar extends StatelessWidget implements PreferredSizeWidget{
-  const DefaultAppbar({super.key, this.title});
+  const DefaultAppbar({super.key, this.title, this.showTitle, this.additionalWidgets});
   final String? title;
+  final List<Widget>? additionalWidgets;
+  final bool? showTitle;
 
   @override
-  // Custom button with image and text
   Widget build(BuildContext context) => AppBar(
       title: title != null ? Text(
         title!,
         style: Theme.of(context).textTheme.headlineMedium,
-      ) : null,
+      ) : showTitle == true ? Image(image: AssetImage('assets/logo.png'), height: 40) :
+      null,
+      actions: additionalWidgets,
   );
   
   @override

@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:kahoot_kopi/main.dart';
+import '../../main.dart';
 
 class GeneralHelper {
   // Create and show snackbar
@@ -16,4 +16,20 @@ class GeneralHelper {
     ),
   );
 
+  // Show loading dialog
+  static void showLoadingDialog(String message) {
+    showDialog(
+      context: globalNavigatorKey.currentContext!,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: Row(
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text(message),
+          ],
+        ),
+      ),
+    );
+  }
 }

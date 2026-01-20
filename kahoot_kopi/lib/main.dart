@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kahoot_kopi/ui/login/login_page.dart';
-
+import 'ui/pin_page/pin_page.dart';
 
 final globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -15,11 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: globalNavigatorKey,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const LoginPage(),
+      title: 'Flutter Kahoot Kopi',
+      home: const PinPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
