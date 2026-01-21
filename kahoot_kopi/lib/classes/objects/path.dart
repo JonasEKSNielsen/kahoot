@@ -9,6 +9,7 @@ enum ApiPath {
   quizSession,
   quizSessionJoin,
   quizSessionPin,
+  authOAuthLogin,
 }
 
 extension PathExtension on ApiPath {
@@ -31,6 +32,8 @@ extension PathExtension on ApiPath {
         name = 'QuizSession/join';
       case ApiPath.quizSessionPin:
         name = 'QuizSession/pin';
+      case ApiPath.authOAuthLogin:
+        name = 'auth/oauth-login';
     }
     return name;
   }

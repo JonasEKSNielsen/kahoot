@@ -1,43 +1,52 @@
 import 'package:flutter/material.dart';
 
-class CustomImageBtn extends StatefulWidget {
-  final String text;
+
+
+class ImageButton extends StatelessWidget {
+  const ImageButton({
+    super.key,
+    required this.imagePath,
+    required this.text,
+    required this.onTap
+  });
+
   final void Function() onTap;
-  final Widget imageWidget;
-
-  const CustomImageBtn({super.key, required this.text, required this.onTap, required this.imageWidget});
-
-  @override
-  State<CustomImageBtn> createState() => _CustomImageBtnState();
-}
-
-class _CustomImageBtnState extends State<CustomImageBtn> {
-  bool _isPressed = false;
+  final String imagePath;
+  final String text;
 
   @override
-  // Custom button with image and text
-  Widget build(BuildContext context) => GestureDetector(
-    // Run given function when pressed
-    onTap: () async => {widget.onTap()},
-    child: Container(
-      padding: const EdgeInsets.all(10),
-      height: 60,
-      width: 300,
+  Widget build(BuildContext context) {
+    return Container(
       decoration: BoxDecoration(
-        color: _isPressed ? Colors.deepPurple.withValues(alpha: 0.6) :Colors.deepPurple,
-        border: Border.all(),
-        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(4),
       ),
-      child: Row(
-        children: [
-          //Image
-          SizedBox(height: 45, child: widget.imageWidget),
-          //Text
-          const Spacer(),
-          Center(child: Text(widget.text, style: TextStyle(color: Colors.white, fontSize: 22))),
-          const Spacer(),
-        ],
+      child: Material(
+        color: Colors.white,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  imagePath,
+                  height: 20,
+                  width: 20,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
